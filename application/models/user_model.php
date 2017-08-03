@@ -18,8 +18,18 @@ class User_model extends CI_Model {
 			return FALSE;
 		}
 	}
-	public function get_user()
+	public function get_user($id)
 	{
+		$this->db->where('id',$id);
+
+		$query = $this->db->get('tbl_users');
+		
+		return $query->row();
+	}
+	public function get_users()
+	{
+	
+
 		$query = $this->db->get('tbl_users');
 		
 		return $query->result();
@@ -31,8 +41,8 @@ class User_model extends CI_Model {
 		$enc_password = md5($this->input->post('password'));
 		
 		$data = array(
-				'fname' => $this->input->post('first_name'),
-				'lname'	=> $this->input->post('last_name'),
+				'fname'     => $this->input->post('first_name'),
+				'lname'	    => $this->input->post('last_name'),
 				'email'		=> $this->input->post('email'),
 				'username'	=> $this->input->post('username'),
 				'password'	=> $enc_password
@@ -42,6 +52,25 @@ class User_model extends CI_Model {
 		
 		return $query;
 	}
+
+	public function edit_user($id, $data)
+	{
+		$this->db->where('id',$id);
+
+		$query = $this->db->update('tbl_users',$data);
+
+		return $query;
+	}
+
+	public function delete_user($id)
+	{
+		$this->db->where('id',$id);
+
+		$query = $this->db->delete('tbl_users');
+
+		return $query;
+	}
+
 	
 	
 	

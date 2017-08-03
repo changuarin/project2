@@ -68,7 +68,7 @@ class Main_con extends CI_Controller {
 
 	public function view()
 	{
-		$data['users'] = $this->user_model->get_user();
+		$data['users'] = $this->user_model->get_users();
 		$data['main_content'] = 'user/index';
 		$this->load->view('layouts/main_dashboard',$data);
 	}	
@@ -90,14 +90,53 @@ class Main_con extends CI_Controller {
 		} else {
 			if($this->user_model->create_user())
 			{
-				$this->session->set_flashdata('registered', 'You are now registered and can log in');
+				$this->session->set_flashdata('registered', 'Account registered! ');
 				
-				redirect('main_con/index');
+				redirect('main_con/view');
 			}
 		}
 	}
 
-		public function logout()	
+	public function edit($id)
+	{
+		$this->form_validation->set_rules('fname', 'Branch Name', 'required|trim|min_length[6]');
+		
+		if($this->form_validation->run() == FALSE)
+		{
+			$data['user'] = $this->user_model->get_user($id);
+			
+			$data['main_content'] = 'user/edit';
+			
+			$this->load->view('layouts/main_dashboard', $data);
+		}
+		else
+		{
+			$data = array(
+					'fname'		   => $this->input->post('fname'),
+					'lname'		   => $this->input->post('lname'),
+					'email'		   => $this->input->post('email'),
+				);
+			
+			if($this->user_model->edit_user($id, $data))
+			{
+				$this->session->set_flashdata('user_updated', 'Account has been updated');
+				
+				redirect('main_con/view');
+			}
+		}
+	}
+
+	public function delete($id)
+	{
+		if($this->user_model->delete_user($id))
+		{
+			$this->session->set_flashdata('user_deleted', 'Account has been deleted');
+			
+			redirect('main_con/view');
+		}
+	}
+
+	public function logout()	
 	
 	{
 		$this->session->unset_userdata('id');

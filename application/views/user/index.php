@@ -112,7 +112,15 @@
 <div id="page-wrapper">
 
      <div class="container-fluid">
-
+        <?php if($this->session->flashdata('registered')) : ?>
+            <p class="alert alert-dismissable alert-success"><?php echo $this->session->flashdata('registered'); ?></p>
+        <?php endif; ?>
+        <?php if($this->session->flashdata('user_updated')) : ?>
+              <p class="alert alert-dismissable alert-success"><?php echo $this->session->flashdata('user_updated'); ?></p>
+        <?php endif; ?>
+        <?php if($this->session->flashdata('user_deleted')) : ?>
+             <p class="alert alert-dismissable alert-danger"><?php echo $this->session->flashdata('user_deleted'); ?></p>
+        <?php endif; ?>
        
         
               	   <!-- Page Heading -->
@@ -155,8 +163,8 @@
 
 								<td>
 									
-									<a class="btn btn-info" href="#">Edit</a>
-									<a class="btn btn-danger btn-sm delete-btn" href="#">Delete</a>
+									<a class="btn btn-info" href="<?php echo base_url(); ?>main_con/edit/<?php echo $user->id; ?>">Edit</a>
+									<a class="btn btn-danger btn-sm delete-btn" href="<?php echo base_url(); ?>main_con/delete/<?php echo $user->id; ?>">Delete</a>
 									
 								</td>
                               
